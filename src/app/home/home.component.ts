@@ -15,11 +15,11 @@ import { flyInOut, expand } from '../animations/app.animation';
     host: {
         '[@flyInOut]': 'true',
         'style': 'display: block;'
-        },
-        animations: [
-          flyInOut(),
-          expand()
-        ]
+    },
+    animations: [
+        flyInOut(),
+        expand()
+    ]
 })
 export class HomeComponent implements OnInit {
 
@@ -27,20 +27,30 @@ export class HomeComponent implements OnInit {
     dishErrorMessage: string;
     promotion: Promotion;
     leader: Leader;
+    promotionErrMsg: string;
+    leaderErrMsg: string;
 
-    constructor(private dishService: DishService,
-        private promotionService: PromotionService,
+    constructor(
+        private dishservice: DishService,
+        private promotionservice: PromotionService,
         private leaderService: LeaderService,
-        @Inject('BaseURL') private BaseURL) { }
+        @Inject('BaseURL') private BaseURL
+    ) { }
+
 
     ngOnInit(): void {
-        this.dishService.getFeaturedDish()
-            .subscribe((dish) => this.dish = dish,
-                e => this.dishErrorMessage = <any>e);
-        this.promotionService.getFeaturedPromotion()
-            .subscribe((promotion) => this.promotion = promotion);
-        this.leaderService.getFeaturedLeader()
-            .subscribe((leader) => this.leader = leader);
+        this.dishservice.getFeaturedDish().subscribe(
+            (result) => (this.dish = result),
+            (errMsg) => (this.dishErrorMessage = <any>errMsg)
+        );
+        this.promotionservice.getFeaturedPromotion().subscribe(
+            (result) => (this.promotion = result),
+            (errMsg) => (this.promotionErrMsg = <any>errMsg)
+        );
+        this.leaderService.getFeaturedLeader().subscribe(
+            (result) => (this.leader = result),
+            (errMsg) => (this.leaderErrMsg = <any>errMsg)
+        );
     }
 
 }
